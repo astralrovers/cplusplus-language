@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 #include <array>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,6 +22,30 @@ int main(void)
 
   at[3] = 10;
   at[-1] = 90;
+
+
+  vector<shared_ptr<int>> test_ptr{shared_ptr<int>(new int(1))};
+
+  test_ptr.push_back(shared_ptr<int>(new int(2)));
+  test_ptr.push_back(shared_ptr<int>(new int(3)));
+  test_ptr.push_back(shared_ptr<int>(new int(4)));
+
+  for (auto item : test_ptr) {
+	cout <<  item << "=" << *item << endl;
+  }
+
+  int cc = 3;
+
+  // 使用lambda进行匹配
+  test_ptr.erase(remove_if(test_ptr.begin(), test_ptr.end(), [cc](shared_ptr<int> &ptr) -> bool 
+			{
+				return *ptr == cc;
+			}),
+		  test_ptr.end());
+
+  cout << test_ptr.size() << endl;
+
+  test_ptr.clear();
 
   return 0;
 }
